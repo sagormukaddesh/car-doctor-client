@@ -50,7 +50,7 @@ const CheckOut = () => {
     return (
         <div>
 
-            <h2 className="text-5xl font-bold text-center mb-6">{title}</h2>
+            <h2 className="text-5xl font-bold text-center mb-6 text-primary">{title}</h2>
             <h2 className="text-2xl font-bold text-center">BOOK NOW</h2>
 
             <form onSubmit={handleBookService}

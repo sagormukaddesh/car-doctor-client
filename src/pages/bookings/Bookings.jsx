@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import BookingRow from "./BookingRow";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 
 const Bookings = () => {
@@ -10,9 +11,14 @@ const Bookings = () => {
 
     const url = `http://localhost:5000/bookings?email=${user?.email}`;
     useEffect(() => {
-        fetch(url)
-            .then(res => res.json())
-            .then(data => setBookings(data))
+        axios.get(url, { withCredentials: true })
+            .then(res => {
+                setBookings(res.data);
+            })
+
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(data => setBookings(data))
     }, [url])
 
     const handleDelete = id => {
@@ -43,9 +49,9 @@ const Bookings = () => {
         fetch(`http://localhost:5000/bookings/${id}`, {
             method: 'PATCH',
             headers: {
-                'content-type' : 'application/json'
+                'content-type': 'application/json'
             },
-            body: JSON.stringify({ status : 'Confirm'})
+            body: JSON.stringify({ status: 'Confirm' })
         })
             .then(res => res.json())
             .then(data => {
@@ -54,7 +60,7 @@ const Bookings = () => {
                     //update state
                     const remaining = bookings.filter(booking => booking._id !== id);
                     const updated = bookings.find(booking => booking._id === id);
-                    updated.status ='confirm'
+                    updated.status = 'confirm'
                     const newBookings = [updated, ...remaining];
                     setBookings(newBookings);
                 }
